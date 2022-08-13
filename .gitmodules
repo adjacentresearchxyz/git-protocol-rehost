@@ -1,0 +1,3 @@
+[submodule "git-ipfs-rehost"]
+	path = git-ipfs-rehost
+	url = https://github.com/whyrusleeping/git-ipfs-rehost
