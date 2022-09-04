@@ -13,7 +13,7 @@ on:
 
 jobs:
   # clones the new submodule repository
-  clone:
+  rehost:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -32,10 +32,6 @@ jobs:
       - name: Check Verison
         run: ipfs --version
 
-  # Rehosts the new repository
-  rehost:
-    runs-on: ubuntu-latest
-    steps:
       - name: List Directory to Pin
         #run: ls repositories/${GITHUB_HEAD_REF}
         working-directory: repositories
