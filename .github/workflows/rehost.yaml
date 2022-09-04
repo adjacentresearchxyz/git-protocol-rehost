@@ -36,6 +36,8 @@ jobs:
   rehost:
     runs-on: ubuntu-latest
     steps:
+      - name: List Directory to Pin
+        run: ls ${GITHUB_WORKSPACE}/repositories/${GITHUB_REF##*/}
       - name: Pin Submodule
         run: |
             curl --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
