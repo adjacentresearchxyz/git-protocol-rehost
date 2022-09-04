@@ -33,7 +33,7 @@ jobs:
         run: ipfs --version
 
       - name: List Directory to Pin
-        working-directory: repositories/${GITHUB_REF#refs/heads/}
+        working-directory: repositories/${GITHUB_HEAD_REF}
         run: ls
       - name: Pin Submodule
         run: |
