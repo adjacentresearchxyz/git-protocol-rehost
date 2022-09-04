@@ -26,17 +26,11 @@ jobs:
       - name: Checkout submodules
         run: git submodule update --init --recursive
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      # Install IPFS
+      - name: Install IPFS
+        run: wget https://dist.ipfs.tech/kubo/v0.15.0/kubo_v0.15.0_linux-amd64.tar.gz && tar -xvzf kubo_v0.15.0_linux-amd64.tar.gz && cd kubo && sudo bash install.sh
+      - name: Check Verison
+        run: ipfs --version
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
   # Rehosts the new repository
   #rehost:
-
-  # cleans up and writes out the hash
-  #finish
