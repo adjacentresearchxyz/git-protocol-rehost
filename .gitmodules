@@ -1,3 +1,6 @@
 [submodule "git-ipfs-rehost"]
 	path = git-ipfs-rehost
 	url = https://github.com/whyrusleeping/git-ipfs-rehost
+[submodule "repositories/v3-core"]
+	path = repositories/v3-core
+	url = https://github.com/Uniswap/v3-core.git
