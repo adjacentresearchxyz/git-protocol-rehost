@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: List Directory to Pin
         #run: ls repositories/${GITHUB_HEAD_REF}
-        working-directory: repository
+        working-directory: repositories
         run: ls
       - name: Pin Submodule
         run: |
