@@ -32,14 +32,11 @@ jobs:
       - name: Check Verison
         run: ipfs --version
 
-      - name: List Directory to Pin
-        working-directory: repositories/${GITHUB_HEAD_REF}
-        run: ls
       - name: Pin Submodule
         run: |
             curl --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
             --header 'Authorization: Bearer ${{ secrets.PINTRA_JWT }}' \
-            --form 'file=@"${GITHUB_WORKSPACE}/repositories/${GITHUB_REF##*/}"' \
+            --form 'file=@"repositories/${GITHUB_HEAD_REF}"' \
             --form 'pinataOptions="{\"cidVersion\": 1}"' \
             --form 'pinataMetadata="{\"name\": \"${GITHUB_REF##*/}\", \"keyvalues\": {\"company\": \"adjacentresearch\"}}"'
       - name: List Pins
