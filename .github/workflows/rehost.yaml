@@ -31,14 +31,16 @@ jobs:
         run: wget https://dist.ipfs.tech/kubo/v0.15.0/kubo_v0.15.0_linux-amd64.tar.gz && tar -xvzf kubo_v0.15.0_linux-amd64.tar.gz && cd kubo && sudo bash install.sh
       - name: Check Verison
         run: ipfs --version
-
+      
       - name: Pin Submodule
-        run: |
-            curl --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
+        uses: wei/curl@v1
+        with:
+          args: |
+            --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
             --header 'Authorization: Bearer ${{ secrets.PINTRA_JWT }}' \
             --form 'file=@"repositories/${GITHUB_HEAD_REF}"' \
             --form 'pinataOptions="{\"cidVersion\": 1}"' \
-            --form 'pinataMetadata="{\"name\": \"${GITHUB_REF##*/}\", \"keyvalues\": {\"company\": \"adjacentresearch\"}}"'
+            --form 'pinataMetadata="{\"name\": \"${GITHUB_HEAD_REF}\", \"keyvalues\": {\"company\": \"adjacentresearch\"}}"'
       - name: List Pins
         run: |
             curl --location --request GET 'https://api.pinata.cloud/pinning/pinJobs?status=retrieving&sort=ASC' --header 'Authorization: Bearer ${{ secrets.PINTRA_JWT }}'
