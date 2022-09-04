@@ -4,3 +4,6 @@
 [submodule "repositories/v3-core"]
 	path = repositories/v3-core
 	url = https://github.com/Uniswap/v3-core.git
+[submodule "repositories/v3-periphery"]
+	path = repositories/v3-periphery
+	url = https://github.com/Uniswap/v3-periphery.git

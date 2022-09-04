@@ -13,7 +13,7 @@ on:
 
 jobs:
   # clones the new submodule repository
-  clone:
+  rehost:
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -24,25 +24,23 @@ jobs:
       - name: Checkout submodules
         run: git submodule update --init --recursive
       - name: Branch name
-        run: echo running on branch ${GITHUB_REF##*/}
+        run: echo running on branch ${GITHUB_HEAD_REF}
 
       # Install IPFS
       - name: Install IPFS
         run: wget https://dist.ipfs.tech/kubo/v0.15.0/kubo_v0.15.0_linux-amd64.tar.gz && tar -xvzf kubo_v0.15.0_linux-amd64.tar.gz && cd kubo && sudo bash install.sh
       - name: Check Verison
         run: ipfs --version
-
-  # Rehosts the new repository
-  rehost:
-    runs-on: ubuntu-latest
-    steps:
+      
       - name: Pin Submodule
-        run: |
-            curl --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
+        uses: wei/curl@v1
+        with:
+          args: |
+            --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
             --header 'Authorization: Bearer ${{ secrets.PINTRA_JWT }}' \
-            --form 'file=@"${GITHUB_WORKSPACE}/repositories/${GITHUB_REF##*/}"' \
+            --form 'file=@"repositories/${GITHUB_HEAD_REF}"' \
             --form 'pinataOptions="{\"cidVersion\": 1}"' \
-            --form 'pinataMetadata="{\"name\": \"${GITHUB_REF##*/}\", \"keyvalues\": {\"company\": \"adjacentresearch\"}}"'
+            --form 'pinataMetadata="{\"name\": \"${GITHUB_HEAD_REF}\", \"keyvalues\": {\"company\": \"adjacentresearch\"}}"'
       - name: List Pins
         run: |
             curl --location --request GET 'https://api.pinata.cloud/pinning/pinJobs?status=retrieving&sort=ASC' --header 'Authorization: Bearer ${{ secrets.PINTRA_JWT }}'
