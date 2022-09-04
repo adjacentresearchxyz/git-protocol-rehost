@@ -36,15 +36,18 @@ jobs:
 
   # Rehosts the new repository
   rehost:
+    runs-on: ubuntu-latest
     steps:
       - name: Pin Submodule
-          run: curl --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
-                --header 'Authorization: Bearer PINATA JWT' \
-                --form 'file=@"${GITHUB_WORKSPACE}/repositories/${GITHUB_REF##*/}"' \
-                --form 'pinataOptions="{\"cidVersion\": 1}"' \
-                --form 'pinataMetadata="{\"name\": \"${GITHUB_REF##*/}\", \"keyvalues\": {\"company\": \"adjacentresearch\"}}"'
+        run: |
+            curl --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
+            --header 'Authorization: Bearer ${{ secrets.PINTRA_JWT }}' \
+            --form 'file=@"${GITHUB_WORKSPACE}/repositories/${GITHUB_REF##*/}"' \
+            --form 'pinataOptions="{\"cidVersion\": 1}"' \
+            --form 'pinataMetadata="{\"name\": \"${GITHUB_REF##*/}\", \"keyvalues\": {\"company\": \"adjacentresearch\"}}"'
       - name: List Pins
-        run: curl --location --request GET 'https://api.pinata.cloud/pinning/pinJobs?status=retrieving&sort=ASC' --header 'Authorization: Bearer PINATA JWT'
+        run: |
+            curl --location --request GET 'https://api.pinata.cloud/pinning/pinJobs?status=retrieving&sort=ASC' --header 'Authorization: Bearer ${{ secrets.PINTRA_JWT }}'
       - name: Comment PR
         uses: mshick/add-pr-comment@v1
         with:
