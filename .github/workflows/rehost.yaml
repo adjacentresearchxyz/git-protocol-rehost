@@ -38,7 +38,8 @@ jobs:
     steps:
       - name: List Directory to Pin
         #run: ls repositories/${GITHUB_HEAD_REF}
-        run: ls ${GITHUB_WORKSPACE}
+        working-directory: ./repository/${GITHUB_HEAD_REF}
+        run: ls
       - name: Pin Submodule
         run: |
             curl --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
