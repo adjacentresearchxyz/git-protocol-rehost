@@ -24,7 +24,7 @@ jobs:
       - name: Checkout submodules
         run: git submodule update --init --recursive
       - name: Branch name
-        run: echo running on branch ${GITHUB_REF}
+        run: echo running on branch ${GITHUB_HEAD_REF}
 
       # Install IPFS
       - name: Install IPFS
