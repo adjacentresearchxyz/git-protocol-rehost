@@ -35,4 +35,23 @@ jobs:
         run: ipfs --version
 
   # Rehosts the new repository
-  #rehost:
+  rehost:
+    steps:
+      - name: Pin Submodule
+          run: curl --location --request POST 'https://api.pinata.cloud/pinning/pinFileToIPFS' \
+                --header 'Authorization: Bearer PINATA JWT' \
+                --form 'file=@"${GITHUB_WORKSPACE}/repositories/${GITHUB_REF##*/}"' \
+                --form 'pinataOptions="{\"cidVersion\": 1}"' \
+                --form 'pinataMetadata="{\"name\": \"${GITHUB_REF##*/}\", \"keyvalues\": {\"company\": \"adjacentresearch\"}}"'
+      - name: List Pins
+        run: curl --location --request GET 'https://api.pinata.cloud/pinning/pinJobs?status=retrieving&sort=ASC' --header 'Authorization: Bearer PINATA JWT'
+      - name: Comment PR
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            **Hello**
+            🌏
+            !
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token-user-login: 'github-actions[bot]' # The user.login for temporary GitHub tokens
+          allow-repeats: false # This is the default
